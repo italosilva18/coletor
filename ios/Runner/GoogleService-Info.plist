@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>623199345625-33gdmi84nrhk6bg3ii68ca64h6kju9q8.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.623199345625-33gdmi84nrhk6bg3ii68ca64h6kju9q8</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCJl80GZA_Ry7Xta6NbHA-Wk6GToOVpSw8</string>
+	<key>GCM_SENDER_ID</key>
+	<string>623199345625</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.registrafit</string>
+	<key>PROJECT_ID</key>
+	<string>registrafit-d925d</string>
+	<key>STORAGE_BUCKET</key>
+	<string>registrafit-d925d.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:623199345625:ios:0228290f2e198f749497c8</string>
+	<key>DATABASE_URL</key>
+	<string>https://registrafit-d925d-default-rtdb.firebaseio.com</string>
+</dict>
+</plist>
