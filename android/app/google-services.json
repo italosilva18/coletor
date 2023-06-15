@@ -30,6 +30,13 @@
             {
               "client_id": "623199345625-0pdfkn0ci77bmq6kn8agqr9sao776ur7.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "623199345625-33gdmi84nrhk6bg3ii68ca64h6kju9q8.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.registrafit"
+              }
             }
           ]
         }
