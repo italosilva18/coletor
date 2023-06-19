@@ -1,125 +1,463 @@
 import 'package:flutter/material.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(DashboardApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
+class DashboardApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'ConectVisão',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a blue toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+        primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: DashboardScreen(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
+class DashboardScreen extends StatefulWidget {
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  _DashboardScreenState createState() => _DashboardScreenState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class _DashboardScreenState extends State<DashboardScreen> {
+  int _currentIndex = 0;
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
+  final List<Widget> _screens = [
+    HomeScreen(),
+    IndicatorsScreen(),
+    DataScreen(),
+    StockScreen(),
+  ];
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        title: Text('ConectVisão'),
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
+      body: _screens[_currentIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Inicial',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.bar_chart),
+            label: 'Indicadores',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.data_usage),
+            label: 'Dados',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.storage),
+            label: 'Estoque',
+          ),
+        ],
+        backgroundColor: Colors.blueGrey,
+        selectedItemColor: Colors.blue,
+        unselectedItemColor: Colors.grey,
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
+}
+
+class HomeScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Venda do Dia',
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          ),
+          SizedBox(height: 16),
+          SfRadialGauge(
+            axes: <RadialAxis>[
+              RadialAxis(
+                minimum: 0,
+                maximum: 100,
+                showLabels: false,
+                showTicks: false,
+                ranges: <GaugeRange>[
+                  GaugeRange(
+                    startValue: 0,
+                    endValue: 70,
+                    color: Colors.green,
+                  ),
+                  GaugeRange(
+                    startValue: 70,
+                    endValue: 100,
+                    color: Colors.grey,
+                  ),
+                ],
+                annotations: <GaugeAnnotation>[
+                  GaugeAnnotation(
+                    widget: Text(
+                      'Vendas do Dia: 350',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    angle: 90,
+                    positionFactor: 0.5,
+                  ),
+                ],
+              ),
+            ],
+          ),
+          SizedBox(height: 16),
+          Text(
+            'Gráfico de Vendas',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          Container(
+            height: 200,
+            child: SfCartesianChart(
+              primaryXAxis: CategoryAxis(),
+              series: <ChartSeries>[
+                ColumnSeries<ChartData, String>(
+                  dataSource: [
+                    ChartData('Jan', 30),
+                    ChartData('Fev', 40),
+                    ChartData('Mar', 50),
+                    ChartData('Abr', 45),
+                    ChartData('Mai', 55),
+                    ChartData('Jun', 60),
+                  ],
+                  xValueMapper: (ChartData data, _) => data.month,
+                  yValueMapper: (ChartData data, _) => data.value,
+                  dataLabelSettings: DataLabelSettings(isVisible: true),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class IndicatorsScreen extends StatefulWidget {
+  @override
+  _IndicatorsScreenState createState() => _IndicatorsScreenState();
+}
+
+class _IndicatorsScreenState extends State<IndicatorsScreen> {
+  String _selectedFilter = 'Dia';
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Indicadores',
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          ),
+          SizedBox(height: 16),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              FilterButton(
+                text: 'Dia',
+                isSelected: _selectedFilter == 'Dia',
+                onPressed: () {
+                  setState(() {
+                    _selectedFilter = 'Dia';
+                  });
+                },
+              ),
+              SizedBox(width: 16),
+              FilterButton(
+                text: 'Mês',
+                isSelected: _selectedFilter == 'Mês',
+                onPressed: () {
+                  setState(() {
+                    _selectedFilter = 'Mês';
+                  });
+                },
+              ),
+              SizedBox(width: 16),
+              FilterButton(
+                text: 'Ano',
+                isSelected: _selectedFilter == 'Ano',
+                onPressed: () {
+                  setState(() {
+                    _selectedFilter = 'Ano';
+                  });
+                },
+              ),
+            ],
+          ),
+          SizedBox(height: 16),
+          Text(
+            'Filtro selecionado: $_selectedFilter',
+            style: TextStyle(fontSize: 18),
+          ),
+          SizedBox(height: 16),
+          Text(
+            'Gráfico de Indicadores',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          Container(
+            height: 200,
+            child: SfCartesianChart(
+              primaryXAxis: CategoryAxis(),
+              series: <ChartSeries>[
+                LineSeries<ChartData, String>(
+                  dataSource: [
+                    ChartData('Jan', 70),
+                    ChartData('Fev', 60),
+                    ChartData('Mar', 50),
+                    ChartData('Abr', 55),
+                    ChartData('Mai', 65),
+                    ChartData('Jun', 75),
+                  ],
+                  xValueMapper: (ChartData data, _) => data.month,
+                  yValueMapper: (ChartData data, _) => data.value,
+                  dataLabelSettings: DataLabelSettings(isVisible: true),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class DataScreen extends StatefulWidget {
+  @override
+  _DataScreenState createState() => _DataScreenState();
+}
+
+class _DataScreenState extends State<DataScreen> {
+  String _selectedFilter = 'Dia';
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Dados',
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          ),
+          SizedBox(height: 16),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              FilterButton(
+                text: 'Dia',
+                isSelected: _selectedFilter == 'Dia',
+                onPressed: () {
+                  setState(() {
+                    _selectedFilter = 'Dia';
+                  });
+                },
+              ),
+              SizedBox(width: 16),
+              FilterButton(
+                text: 'Mês',
+                isSelected: _selectedFilter == 'Mês',
+                onPressed: () {
+                  setState(() {
+                    _selectedFilter = 'Mês';
+                  });
+                },
+              ),
+              SizedBox(width: 16),
+              FilterButton(
+                text: 'Ano',
+                isSelected: _selectedFilter == 'Ano',
+                onPressed: () {
+                  setState(() {
+                    _selectedFilter = 'Ano';
+                  });
+                },
+              ),
+            ],
+          ),
+          SizedBox(height: 16),
+          Text(
+            'Filtro selecionado: $_selectedFilter',
+            style: TextStyle(fontSize: 18),
+          ),
+          SizedBox(height: 16),
+          Text(
+            'Gráfico de Dados',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          Container(
+            height: 200,
+            child: SfCartesianChart(
+              primaryXAxis: CategoryAxis(),
+              series: <ChartSeries>[
+                ColumnSeries<ChartData, String>(
+                  dataSource: [
+                    ChartData('Jan', 100),
+                    ChartData('Fev', 150),
+                    ChartData('Mar', 200),
+                    ChartData('Abr', 175),
+                    ChartData('Mai', 250),
+                    ChartData('Jun', 300),
+                  ],
+                  xValueMapper: (ChartData data, _) => data.month,
+                  yValueMapper: (ChartData data, _) => data.value,
+                  dataLabelSettings: DataLabelSettings(isVisible: true),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class FilterButton extends StatelessWidget {
+  final String text;
+  final bool isSelected;
+  final VoidCallback onPressed;
+
+  const FilterButton({
+    Key? key,
+    required this.text,
+    required this.isSelected,
+    required this.onPressed,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+        primary: isSelected ? Colors.blue : Colors.grey,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+      ),
+      child: Text(
+        text,
+        style: TextStyle(
+          color: isSelected ? Colors.white : Colors.black,
+        ),
+      ),
+    );
+  }
+}
+
+class StockScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Estoque',
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          ),
+          SizedBox(height: 16),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  // Lógica para lidar com o botão de "Entrada"
+                },
+                child: Text('Entrada'),
+              ),
+              SizedBox(width: 16),
+              ElevatedButton(
+                onPressed: () {
+                  // Lógica para lidar com o botão de "Saída"
+                },
+                child: Text('Saída'),
+              ),
+            ],
+          ),
+          SizedBox(height: 16),
+          Text(
+            'Itens que entraram:',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          DataTable(
+            columns: [
+              DataColumn(label: Text('Item')),
+              DataColumn(label: Text('Quantidade')),
+            ],
+            rows: [
+              DataRow(cells: [
+                DataCell(Text('Item 1')),
+                DataCell(Text('10')),
+              ]),
+              DataRow(cells: [
+                DataCell(Text('Item 2')),
+                DataCell(Text('5')),
+              ]),
+              DataRow(cells: [
+                DataCell(Text('Item 3')),
+                DataCell(Text('15')),
+              ]),
+            ],
+          ),
+          SizedBox(height: 16),
+          Text(
+            'Itens que saíram:',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          DataTable(
+            columns: [
+              DataColumn(label: Text('Item')),
+              DataColumn(label: Text('Quantidade')),
+            ],
+            rows: [
+              DataRow(cells: [
+                DataCell(Text('Item 1')),
+                DataCell(Text('8')),
+              ]),
+              DataRow(cells: [
+                DataCell(Text('Item 2')),
+                DataCell(Text('3')),
+              ]),
+              DataRow(cells: [
+                DataCell(Text('Item 3')),
+                DataCell(Text('6')),
+              ]),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class ChartData {
+  final String month;
+  final double value;
+
+  ChartData(this.month, this.value);
 }
