@@ -1,4 +1,4 @@
-# Coleta de Dados - Projeto XYZ
+# Coleta de Dados 
 
 ## Descrição
 Este projeto tem como objetivo realizar a coleta, processamento e envio de dados de um banco de dados local para uma API remota.
